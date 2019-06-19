@@ -22,19 +22,21 @@ ui <- fluidPage(
     # Application title
     titlePanel("Statistics on your nanopore run"),
     h3("Inputs"),
-    # flowLayout(
-    # fluidRow(
-    # column(width = 2,
-    fileInput("filesMS_det", "Choose all mappingStats_det.txt",
-              accept = c(
-                  "text/csv",
-                  "text/comma-separated-values,text/plain"),
-              multiple = T
+    fluidRow(
+        column(width = 2,
+               fileInput("filesMS_det", "Choose all mappingStats_det.txt",
+                         accept = c(
+                             "text/csv",
+                             "text/comma-separated-values,text/plain"),
+                         multiple = T
+               ),
+               textOutput("nbOfInputFiles")
+        ),
+        column(width = 3,
+               textInput("expeName", "Line to add to all plot titles")
+        )
     ),
-    textOutput("nbOfInputFiles"),
-    textInput("expeName", "Line to add to all plot titles"),
     h3("Size distribution without categories"),
-    # ),
     fluidRow(
         column(width = 2,
                uiOutput("sliderSizeRange")
@@ -98,7 +100,6 @@ ui <- fluidPage(
                plotOutput("plotReadvsBase")
         )
     )
-    # )
 )
 
 
@@ -326,7 +327,7 @@ server <- function(input, output) {
     output$downloadIndividualMappingStats <- downloadHandler(
         filename = function(){
             "individualMappingStats.pdf"
-            },
+        },
         content = function(file) {
             pdf(file, title = paste(input$expeName, "individualMappingStats"))
             plotIndividualMappingStats()
@@ -356,7 +357,7 @@ server <- function(input, output) {
     output$downloadIndividualMappingStatsProportion <- downloadHandler(
         filename = function(){
             "individualMappingStatsProportion.pdf"
-            },
+        },
         content = function(file) {
             pdf(file, title = paste(input$expeName,
                                     "individualMappingStatsProportion"))
@@ -372,7 +373,7 @@ server <- function(input, output) {
     output$downloadReadvsBase <- downloadHandler(
         filename = function(){
             "readvsBase.pdf"
-            },
+        },
         content = function(file) {
             pdf(file, title = paste(input$expeName, "readvsBase"))
             plotReadVsBase(intervalls(), createFullSizeResData(), 
